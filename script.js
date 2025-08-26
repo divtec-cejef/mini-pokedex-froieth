@@ -58,7 +58,7 @@ function displayPokemons() {
     }
 
     // TODO : peut être corrigé
-    if (pokemons.length === 0) {
+    if (container.children.length === 0) {
         container.innerHTML = `<p>Dracaufeu a tout brûlé, aucun Pokémon ne correspond à ta recherche !</p>`
     }
 }
