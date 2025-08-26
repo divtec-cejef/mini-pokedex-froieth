@@ -49,22 +49,6 @@ const pokemons = [
 ];
 
 
-// Fonction qui créer la carte de chaque pokemon
-function generatePokemonCardHTML(pokemon) {
-    const types = pokemon.type.split(','); // convertit la chaîne en tableau
-
-    // Retourne la structure de la carte
-    return ` 
-        <div class="pokemon-card" style="background: #705898;">
-            <img src="images/${pokemon.img}" alt="${pokemon.name}">
-            <h2>${pokemon.name}</h2>
-            <div>Type : ${types.join(' / ')}</div>
-            <div>Niveau : ${pokemon.level}</div>
-        </div>
-    `;
-}
-
-
 // Fonction qui affiche le nom et le ou les type des pokemons
 function displayPokemons() {
     const container = document.querySelector('.pokemon-container');
@@ -82,6 +66,23 @@ function displayPokemons() {
         container.innerHTML = `<p>Dracaufeu a tout brûlé, aucun Pokémon ne correspond à ta recherche !</p>`;
     }
 }
+
+
+// Fonction qui créer la carte de chaque pokemon
+function generatePokemonCardHTML(pokemon) {
+    const types = pokemon.type.split(','); // convertit la chaîne en tableau
+
+    // Retourne la structure de la carte
+    return ` 
+        <div class="pokemon-card" style="background: #705898;">
+            <img src="images/${pokemon.img}" alt="${pokemon.name}">
+            <h2>${pokemon.name}</h2>
+            <div>Type : ${types.join(' / ')}</div>
+            <div>Niveau : ${pokemon.level}</div>
+        </div>
+    `;
+}
+
 
 // Appel la fonction
 displayPokemons();
