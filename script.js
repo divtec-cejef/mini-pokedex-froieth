@@ -54,7 +54,17 @@ function displayPokemons() {
 
     // Ajoute tout les noms des pokemons dans un élément <p>
     for (let i = 0; i < pokemons.length; i++) {
-        container.innerHTML += `<p>${pokemons[i].name}</p>`;
+
+        if (pokemons[i].type.includes(',')) {
+            container.innerHTML += `<p>${pokemons[i].name} 
+            <small>${pokemons[i].type.split(',')[0]}</small>
+            <small>${pokemons[i].type.split(',')[1]}</small>
+            </p>`;
+        } else {
+            container.innerHTML += `<p>${pokemons[i].name} 
+            <small>${pokemons[i].type.split(',')[0]}</small>
+            </p>`;
+        }
     }
 
     // TODO : peut être corrigé
