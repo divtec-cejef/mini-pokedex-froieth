@@ -49,28 +49,39 @@ const pokemons = [
 ];
 
 
+// Fonction qui créer la carte de chaque pokemon
+function generatePokemonCardHTML(pokemon) {
+    const types = pokemon.type.split(','); // convertit la chaîne en tableau
+
+    // Retourne la structure de la carte
+    return ` 
+        <div class="pokemon-card" style="background: #705898;">
+            <img src="images/${pokemon.img}" alt="${pokemon.name}">
+            <h2>${pokemon.name}</h2>
+            <div>Type : ${types.join(' / ')}</div>
+            <div>Niveau : ${pokemon.level}</div>
+        </div>
+    `;
+}
+
+
+// Fonction qui affiche le nom et le ou les type des pokemons
 function displayPokemons() {
     const container = document.querySelector('.pokemon-container');
 
-    // Ajoute tout les noms des pokemons dans un élément <p>
-    for (let i = 0; i < pokemons.length; i++) {
+    // Vide le tableau
+    container.innerHTML = ''; // Nettoie le conteneur avant d'ajouter les cartes
 
-        if (pokemons[i].type.includes(',')) {
-            container.innerHTML += `<p>${pokemons[i].name} 
-            <small>${pokemons[i].type.split(',')[0]}</small>
-            <small>${pokemons[i].type.split(',')[1]}</small>
-            </p>`;
-        } else {
-            container.innerHTML += `<p>${pokemons[i].name} 
-            <small>${pokemons[i].type.split(',')[0]}</small>
-            </p>`;
-        }
+    for (let i = 0; i < pokemons.length; i++) {
+        const cardHTML = generatePokemonCardHTML(pokemons[i]);
+        container.innerHTML += cardHTML;
     }
 
-    // TODO : peut être corrigé
+    // Affiche un message si le container est vide
     if (container.children.length === 0) {
-        container.innerHTML = `<p>Dracaufeu a tout brûlé, aucun Pokémon ne correspond à ta recherche !</p>`
+        container.innerHTML = `<p>Dracaufeu a tout brûlé, aucun Pokémon ne correspond à ta recherche !</p>`;
     }
 }
 
+// Appel la fonction
 displayPokemons();
