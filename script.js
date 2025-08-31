@@ -92,19 +92,33 @@ displayPokemons();
 
 function filterAndSortPokemons() {
     const searchBar = document.querySelector('#search-bar');
-    const searchValue = searchBar.value.toLowerCase();
+    const typeFilter = document.querySelector('#type-filter');
 
-    const filteredPokemons = pokemons.filter(pokemon =>
-        pokemon.name.toLowerCase().includes(searchValue)
+    const valeurRecherche = searchBar.value.toLowerCase();
+    const type = typeFilter.value;
+
+    // Filtre avec le nom
+    let filteredPokemons = pokemons.filter(pokemon =>
+        pokemon.name.toLowerCase().includes(valeurRecherche)
     );
+
+    // Filtre du type
+    if (type) {
+        filteredPokemons = filteredPokemons.filter(pokemon =>
+            pokemon.type.split(',').includes(type)
+        );
+    }
 
     displayPokemons(filteredPokemons);
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
     const searchBar = document.querySelector('#search-bar');
-    searchBar.addEventListener('input', filterAndSortPokemons);
+    const typeFilter = document.querySelector('#type-filter');
 
-    // Afficher tous les Pokémon au départ
+    searchBar.addEventListener('input', filterAndSortPokemons);
+    typeFilter.addEventListener('change', filterAndSortPokemons);
+
     displayPokemons();
 });
