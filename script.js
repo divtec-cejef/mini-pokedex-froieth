@@ -29,21 +29,140 @@ const typeColors = {
 
 // Tableau d'objets représentant les Pokémon
 const pokemons = [
-    { name: 'Pikachu', type: 'Électrique', level: 35, img: 'pikachu.png' },
-    { name: 'Bulbizarre', type: 'Plante,Poison', level: 15, img: 'bulbizarre.png' },
-    { name: 'Salamèche', type: 'Feu', level: 20, img: 'salameche.png' },
-    { name: 'Carapuce', type: 'Eau', level: 10, img: 'carapuce.png' },
-    { name: 'Rondoudou', type: 'Normal,Fée', level: 25, img: 'rondoudou.png' },
-    { name: 'Ectoplasma', type: 'Spectre,Poison', level: 45, img: 'ectoplasma.png' },
-    { name: 'Évoli', type: 'Normal,Combat', level: 22, img: 'evoli.png' },
-    { name: 'Dracaufeu', type: 'Feu,Vol', level: 50, img: 'dracaufeu.png' },
-    { name: 'Florizarre', type: 'Plante,Poison', level: 55, img: 'florizarre.png' },
-    { name: 'Tortank', type: 'Eau', level: 52, img: 'tortank.png' },
-    { name: 'Mélofée', type: 'Fée', level: 18, img: 'melofee.png' },
-    { name: 'Raichu', type: 'Électrique', level: 40, img: 'raichu.png' },
-    { name: 'Magicarpe', type: 'Eau', level: 5, img: 'magicarpe.png' },
-    { name: 'Lokhlass', type: 'Eau,Glace', level: 35, img: 'lokhlass.png' },
-    { name: 'Onix', type: 'Roche,Sol', level: 30, img: 'onix.png' },
-    { name: 'Ronflex', type: 'Normal', level: 45, img: 'ronflex.png' },
-    { name: 'Mewtwo', type: 'Psy', level: 70, img: 'mewtwo.png' }
+    {name: 'Pikachu', type: 'Électrique', level: 35, img: 'pikachu.png'},
+    {name: 'Bulbizarre', type: 'Plante,Poison', level: 15, img: 'bulbizarre.png'},
+    {name: 'Salamèche', type: 'Feu', level: 20, img: 'salameche.png'},
+    {name: 'Carapuce', type: 'Eau', level: 10, img: 'carapuce.png'},
+    {name: 'Rondoudou', type: 'Normal,Fée', level: 25, img: 'rondoudou.png'},
+    {name: 'Ectoplasma', type: 'Spectre,Poison', level: 45, img: 'ectoplasma.png'},
+    {name: 'Évoli', type: 'Normal,Combat', level: 22, img: 'evoli.png'},
+    {name: 'Dracaufeu', type: 'Feu,Vol', level: 50, img: 'dracaufeu.png'},
+    {name: 'Florizarre', type: 'Plante,Poison', level: 55, img: 'florizarre.png'},
+    {name: 'Tortank', type: 'Eau', level: 52, img: 'tortank.png'},
+    {name: 'Mélofée', type: 'Fée', level: 18, img: 'melofee.png'},
+    {name: 'Raichu', type: 'Électrique', level: 40, img: 'raichu.png'},
+    {name: 'Magicarpe', type: 'Eau', level: 5, img: 'magicarpe.png'},
+    {name: 'Lokhlass', type: 'Eau,Glace', level: 35, img: 'lokhlass.png'},
+    {name: 'Onix', type: 'Roche,Sol', level: 30, img: 'onix.png'},
+    {name: 'Ronflex', type: 'Normal', level: 45, img: 'ronflex.png'},
+    {name: 'Mewtwo', type: 'Psy', level: 70, img: 'mewtwo.png'}
 ];
+
+
+// Fonction qui affiche le nom et le ou les type des pokemons
+function displayPokemons(list = pokemons) {
+    const container = document.querySelector('.pokemon-container');
+    container.innerHTML = '';
+
+    for (let i = 0; i < list.length; i++) {
+        const cardHTML = generatePokemonCardHTML(list[i]);
+        container.innerHTML += cardHTML;
+    }
+
+    if (container.children.length === 0) {
+        container.innerHTML = `<p>Dracaufeu a tout brûlé, aucun Pokémon ne correspond à ta recherche !</p>`;
+    }
+}
+
+
+// Fonction qui créer la carte de chaque pokemon
+function generatePokemonCardHTML(pokemon) {
+    const types = pokemon.type.split(',');
+
+    const couleur1 = typeColors[types[0]] ?? DEFAULT_COLOR;
+    const couleur2 = types[1] ? (typeColors[types[1]] ?? DEFAULT_COLOR) : null;
+
+    const backgroundCouleur = couleur2 ? `linear-gradient(to right, ${couleur1} 50%, ${couleur2} 50%)` : couleur1;
+
+    return ` 
+        <div class="pokemon-card" style="background: ${backgroundCouleur};">
+            <img src="images/${pokemon.img}" alt="${pokemon.name}">
+            <h2>${pokemon.name}</h2>
+            <div>Type : ${types.join(' / ')}</div>
+            <div>Niveau : ${pokemon.level}</div>
+        </div>
+    `;
+}
+
+
+// Appel la fonction
+displayPokemons();
+
+
+function filterAndSortPokemons() {
+    const searchBar = document.querySelector('#search-bar');
+    const typeFilter = document.querySelector('#type-filter');
+    const sortOrder = document.querySelector('#sort-order');
+
+    const recherche = searchBar.value.toLowerCase();
+    const type = typeFilter.value;
+    const triChoisi = sortOrder.value;
+
+    // Filtre le nom du pokemon
+    let filteredPokemons = pokemons.filter(pokemon =>
+        pokemon.name.toLowerCase().includes(recherche)
+    );
+
+    // Filtre par type
+    if (type) {
+        filteredPokemons = filteredPokemons.filter(pokemon =>
+            pokemon.type.split(',').includes(type)
+        );
+    }
+
+    // Tri
+    switch (triChoisi) {
+        case 'name-asc':
+            filteredPokemons.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        case 'name-desc':
+            filteredPokemons.sort((a, b) => b.name.localeCompare(a.name));
+            break;
+        case 'level-asc':
+            filteredPokemons.sort((a, b) => a.level - b.level);
+            break;
+        case 'level-desc':
+            filteredPokemons.sort((a, b) => b.level - a.level);
+            break;
+    }
+
+    displayPokemons(filteredPokemons);
+}
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchBar = document.querySelector('#search-bar');
+    const typeFilter = document.querySelector('#type-filter');
+    const sortOrder = document.querySelector('#sort-order');
+
+    searchBar.addEventListener('input', filterAndSortPokemons);
+    typeFilter.addEventListener('change', filterAndSortPokemons);
+    sortOrder.addEventListener('change', filterAndSortPokemons);
+
+    displayPokemons(); // Affichage initial
+});
+
+
+
+
+
+
+function animationCarte() {
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .pokemon-card {
+            transition: transform 0.3s ease;
+        }
+
+        .pokemon-card:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px white, 0 0 40px white;
+
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+animationCarte();
+
