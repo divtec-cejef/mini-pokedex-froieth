@@ -70,11 +70,15 @@ function displayPokemons() {
 
 // Fonction qui créer la carte de chaque pokemon
 function generatePokemonCardHTML(pokemon) {
-    const types = pokemon.type.split(','); // convertit la chaîne en tableau
+    const types = pokemon.type.split(',');
 
-    // Retourne la structure de la carte
+    const couleur1 = typeColors[types[0]] ?? DEFAULT_COLOR;
+    const couleur2 = types[1] ? (typeColors[types[1]] ?? DEFAULT_COLOR) : null;
+
+    const backgroundCouleur = couleur2 ? `linear-gradient(to right, ${couleur1} 50%, ${couleur2} 50%)` : couleur1;
+
     return ` 
-        <div class="pokemon-card" style="background: #705898;">
+        <div class="pokemon-card" style="background: ${backgroundCouleur};">
             <img src="images/${pokemon.img}" alt="${pokemon.name}">
             <h2>${pokemon.name}</h2>
             <div>Type : ${types.join(' / ')}</div>
