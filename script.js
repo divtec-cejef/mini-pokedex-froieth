@@ -89,36 +89,57 @@ function generatePokemonCardHTML(pokemon) {
 displayPokemons();
 
 
-
 function filterAndSortPokemons() {
     const searchBar = document.querySelector('#search-bar');
     const typeFilter = document.querySelector('#type-filter');
+    const sortOrder = document.querySelector('#sort-order');
 
-    const valeurRecherche = searchBar.value.toLowerCase();
+    const recherche = searchBar.value.toLowerCase();
     const type = typeFilter.value;
+    const triChoisi = sortOrder.value;
 
-    // Filtre avec le nom
+    // Filtre le nom du pokemon
     let filteredPokemons = pokemons.filter(pokemon =>
-        pokemon.name.toLowerCase().includes(valeurRecherche)
+        pokemon.name.toLowerCase().includes(recherche)
     );
 
-    // Filtre du type
+    // Filtre par type
     if (type) {
         filteredPokemons = filteredPokemons.filter(pokemon =>
             pokemon.type.split(',').includes(type)
         );
     }
 
+    // Tri
+    switch (triChoisi) {
+        case 'name-asc':
+            filteredPokemons.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        case 'name-desc':
+            filteredPokemons.sort((a, b) => b.name.localeCompare(a.name));
+            break;
+        case 'level-asc':
+            filteredPokemons.sort((a, b) => a.level - b.level);
+            break;
+        case 'level-desc':
+            filteredPokemons.sort((a, b) => b.level - a.level);
+            break;
+    }
+
     displayPokemons(filteredPokemons);
 }
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
     const searchBar = document.querySelector('#search-bar');
     const typeFilter = document.querySelector('#type-filter');
+    const sortOrder = document.querySelector('#sort-order');
 
     searchBar.addEventListener('input', filterAndSortPokemons);
     typeFilter.addEventListener('change', filterAndSortPokemons);
+    sortOrder.addEventListener('change', filterAndSortPokemons);
 
-    displayPokemons();
+    displayPokemons(); // Affichage initial
 });
+
