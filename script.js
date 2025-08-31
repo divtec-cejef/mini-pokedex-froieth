@@ -50,18 +50,15 @@ const pokemons = [
 
 
 // Fonction qui affiche le nom et le ou les type des pokemons
-function displayPokemons() {
+function displayPokemons(list = pokemons) {
     const container = document.querySelector('.pokemon-container');
+    container.innerHTML = '';
 
-    // Vide le tableau
-    container.innerHTML = ''; // Nettoie le conteneur avant d'ajouter les cartes
-
-    for (let i = 0; i < pokemons.length; i++) {
-        const cardHTML = generatePokemonCardHTML(pokemons[i]);
+    for (let i = 0; i < list.length; i++) {
+        const cardHTML = generatePokemonCardHTML(list[i]);
         container.innerHTML += cardHTML;
     }
 
-    // Affiche un message si le container est vide
     if (container.children.length === 0) {
         container.innerHTML = `<p>Dracaufeu a tout brûlé, aucun Pokémon ne correspond à ta recherche !</p>`;
     }
@@ -90,3 +87,24 @@ function generatePokemonCardHTML(pokemon) {
 
 // Appel la fonction
 displayPokemons();
+
+
+
+function filterAndSortPokemons() {
+    const searchBar = document.querySelector('#search-bar');
+    const searchValue = searchBar.value.toLowerCase();
+
+    const filteredPokemons = pokemons.filter(pokemon =>
+        pokemon.name.toLowerCase().includes(searchValue)
+    );
+
+    displayPokemons(filteredPokemons);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchBar = document.querySelector('#search-bar');
+    searchBar.addEventListener('input', filterAndSortPokemons);
+
+    // Afficher tous les Pokémon au départ
+    displayPokemons();
+});
