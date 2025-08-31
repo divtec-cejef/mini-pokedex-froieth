@@ -143,3 +143,26 @@ document.addEventListener('DOMContentLoaded', () => {
     displayPokemons(); // Affichage initial
 });
 
+
+
+
+
+
+function animationCarte() {
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .pokemon-card {
+            transition: transform 0.3s ease;
+        }
+
+        .pokemon-card:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px white, 0 0 40px white;
+
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+animationCarte();
+
